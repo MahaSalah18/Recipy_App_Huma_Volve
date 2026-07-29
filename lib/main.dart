@@ -15,8 +15,12 @@ class MyApp extends StatelessWidget {
       title: 'Recipe App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF8B4513)),
-        scaffoldBackgroundColor: const Color(0xFFF5F5DC),
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 226, 227, 227),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 148, 76, 17),
+          surface: const Color.fromARGB(255, 226, 227, 227),
+        ),
       ),
       home: const RecipeHomeScreen(),
     );
