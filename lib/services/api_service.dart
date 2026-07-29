@@ -1,22 +1,27 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 import '../models/meal_model.dart';
 
 class ApiService {
-  static const _baseUrl = 'https://www.themealdb.com/api/json/v1/1';
+  final Dio _dio;
+
+  ApiService({Dio? dio})
+      : _dio = dio ??
+            Dio(
+              BaseOptions(
+                baseUrl: 'https://www.themealdb.com/api/json/v1/1',
+                connectTimeout: const Duration(seconds: 10),
+                receiveTimeout: const Duration(seconds: 10),
+              ),
+            );
 
   Future<List<Meal>> getMealsByCategory(String category) async {
-    final response = await http.get(
-      Uri.parse('$_baseUrl/filter.php?c=$category'),
+    final response = await _dio.get(
+      '/filter.php',
+      queryParameters: {'c': category},
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to load meals');
-    }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
+    final data = response.data as Map<String, dynamic>;
     return MealsResponse.fromJson(data).meals;
   }
 }
